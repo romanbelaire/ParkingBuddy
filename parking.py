@@ -8,7 +8,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 car_cascade = cv2.CascadeClassifier('cas1.xml')
 
 def getImage():
@@ -36,7 +36,7 @@ def detectCars_cascade(img):
     print(len(cars))
     #cv2.imshow(str(numCars), img)
     #cv2.waitKey(0)
-    return rects
+    return rects, len(cars)
 
 
 def getHeatMap(img, rects):
@@ -48,13 +48,19 @@ def getHeatMap(img, rects):
         cv2.fillConvexPoly(masking, rect, (0.5), lineType=4)
 
 
-    cv2.imshow('', masking)
-    cv2.waitKey(0)
+    #cv2.imshow('', img)
+    #cv2.waitKey(0)
 
 
-    return
+    return img
 
-image = cv2.imread('dataset/parking2.jpg')
+def getData():
+    image = getImage()
+    rects, carNum = detectCars_cascade(image)
+    img = getHeatMap(image, rects)
+    return img, carNum
+
+#image = cv2.imread('dataset/parking2.jpg')
 #image = getImage()
-rects = detectCars_cascade(image)
-getHeatMap(image, rects)
+#rects = detectCars_cascade(image)
+#getHeatMap(image, rects)
